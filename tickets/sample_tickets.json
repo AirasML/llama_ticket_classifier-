@@ -1,0 +1,27 @@
+[
+    {
+        "ticket_number": 1,
+        "client_name": "Alice Johnson",
+        "ticket_text": "I received a damaged phone in my last order (#78901). I need a replacement as soon as possible."
+    },
+    {
+        "ticket_number": 2,
+        "client_name": "Bob Smith",
+        "ticket_text": "I'm unable to access my account even after resetting my password. Please help!"
+    },
+    {
+        "ticket_number": 3,
+        "client_name": "Catherine Lee",
+        "ticket_text": "I want to know if the new laptop model is available for pre-order. Any information would be helpful."
+    },
+    {
+        "ticket_number": 4,
+        "client_name": "Daniel Brown",
+        "ticket_text": "The payment for my last purchase didn't go through but the amount was deducted from my bank account. Can you check?"
+    },
+    {
+        "ticket_number": 5,
+        "client_name": "Eleanor Davis",
+        "ticket_text": "My smart TV is not connecting to Wi-Fi after the latest software update. Can you assist me with troubleshooting?"
+    }
+]

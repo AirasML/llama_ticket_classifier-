@@ -1,0 +1,4 @@
+ticket_number,client_name,ticket_text,category,urgency,sentiment,confidence,key_information,suggested_action
+1,Alice Johnson,I received a damaged phone in my last order (#78901). I need a replacement as soon as possible.,order_issue,high,angry,0.9,phone model; damage; order number,Escalate to the order fulfillment team for expedited replacement
+2,Bob Smith,I'm unable to access my account even after resetting my password. Please help!,account_access,high,frustrated,0.8,account ID; email address,Escalate to account management team for manual reset of password
+4,Daniel Brown,The payment for my last purchase didn't go through but the amount was deducted from my bank account. Can you check?,billing,high,neutral,0.8,payment amount; bank account,Verify the payment status with the bank and provide an update to the customer.
