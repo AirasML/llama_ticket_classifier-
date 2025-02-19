@@ -1,4 +1,6 @@
 ticket_number,client_name,ticket_text,category,urgency,sentiment,confidence,key_information,suggested_action
-1,Alice Johnson,I received a damaged phone in my last order (#78901). I need a replacement as soon as possible.,order_issue,high,angry,0.9,phone model; damage; order number,Escalate to the order fulfillment team for expedited replacement
-2,Bob Smith,I'm unable to access my account even after resetting my password. Please help!,account_access,high,frustrated,0.8,account ID; email address,Escalate to account management team for manual reset of password
-4,Daniel Brown,The payment for my last purchase didn't go through but the amount was deducted from my bank account. Can you check?,billing,high,neutral,0.8,payment amount; bank account,Verify the payment status with the bank and provide an update to the customer.
+1,Alice Johnson,I received a damaged phone in my last order (#78901). I need a replacement as soon as possible.,order_issue,high,angry,0.9,damaged phone,Replace the phone as soon as possible
+2,Bob Smith,I'm unable to access my account even after resetting my password. Please help!,account_access,high,frustrated,0.8,username; password,Escalate to an account specialist for further assistance
+3,Catherine Lee,I want to know if the new laptop model is available for pre-order. Any information would be helpful.,product_inquiry,medium,neutral,0.8,laptop model,check availability and pre-order options on the platform
+4,Daniel Brown,The payment for my last purchase didn't go through but the amount was deducted from my bank account. Can you check?,billing,high,neutral,0.8,payment details; bank account information,verify payment method and retry transaction
+5,Eleanor Davis,My smart TV is not connecting to Wi-Fi after the latest software update. Can you assist me with troubleshooting?,technical_support,high,frustrated,0.8,TV model; software version; Wi-Fi network,troubleshoot software issue

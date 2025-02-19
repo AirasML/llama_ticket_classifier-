@@ -6,6 +6,7 @@ import ollama
 import json
 import os
 import csv
+import time
 
 class TicketCategory(str, Enum):
     ORDER_ISSUE = "order_issue"
@@ -53,23 +54,32 @@ Ensure the output JSON contains these exact field names: 'category', 'urgency', 
 Respond ONLY with a valid JSON object that adheres to this structure, without any additional text. Make sure that the response is in a valid json format. 
 """
 
-def classify_ticket(ticket_text: str) -> TicketClassification:
-    response = ollama.chat(
-        model='llama2',
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": ticket_text}
-        ]
+def classify_ticket(ticket_text: str, retries=3, delay=2) -> TicketClassification:
+    for attempt in range(retries):
+        try:
+            response = ollama.chat(
+                model='llama2',
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": ticket_text}
+                ]
+            )
+            json_response = response['message']['content'].strip()
+            json_data = json.loads(json_response)
+            return TicketClassification.model_validate(json_data)
+        except (json.JSONDecodeError, ValueError) as e:
+            print(f"Attempt {attempt + 1} failed: Invalid JSON response. Retrying in {delay} seconds...")
+            time.sleep(delay)
+    
+    print("Failed to classify ticket after multiple attempts. Assigning default values.")
+    return TicketClassification(
+        category=TicketCategory.OTHER,
+        urgency=TicketUrgency.LOW,
+        sentiment=CustomerSentiment.NEUTRAL,
+        confidence=0.0,
+        key_information=["Unable to process ticket"],
+        suggested_action="Manual review required."
     )
-    json_response = response['message']['content'].strip()
-    try:
-        json_data = json.loads(json_response)
-        return TicketClassification.model_validate(json_data)
-    except (json.JSONDecodeError, ValueError) as e:
-        print("Error: Invalid JSON response.")
-        print("Raw response:", json_response)
-        raise e
-
 
 def process_tickets_from_directory(directory: str, output_csv: str):
     with open(output_csv, mode='w', newline='') as csvfile:
@@ -82,21 +92,18 @@ def process_tickets_from_directory(directory: str, output_csv: str):
                 with open(os.path.join(directory, filename), 'r') as file:
                     tickets = json.load(file)
                     for ticket in tickets:
-                        try:
-                            result = classify_ticket(ticket['ticket_text'])
-                            writer.writerow({
-                                'ticket_number': ticket['ticket_number'],
-                                'client_name': ticket['client_name'],
-                                'ticket_text': ticket['ticket_text'],
-                                'category': result.category,
-                                'urgency': result.urgency,
-                                'sentiment': result.sentiment,
-                                'confidence': result.confidence,
-                                'key_information': '; '.join(result.key_information),
-                                'suggested_action': result.suggested_action
-                            })
-                        except Exception as e:
-                            print(f"Failed to classify ticket {ticket['ticket_number']}: {e}")
+                        result = classify_ticket(ticket['ticket_text'])
+                        writer.writerow({
+                            'ticket_number': ticket['ticket_number'],
+                            'client_name': ticket['client_name'],
+                            'ticket_text': ticket['ticket_text'],
+                            'category': result.category,
+                            'urgency': result.urgency,
+                            'sentiment': result.sentiment,
+                            'confidence': result.confidence,
+                            'key_information': '; '.join(result.key_information),
+                            'suggested_action': result.suggested_action
+                        })
 
 if __name__ == "__main__":
     input_directory = "tickets"
